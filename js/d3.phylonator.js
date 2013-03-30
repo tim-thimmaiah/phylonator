@@ -7,8 +7,8 @@
 
 if (!d3) { throw "d3 wasn't included!"};
 (function() {
-  d3.phylogram = {}
-  d3.phylogram.rightAngleDiagonal = function() {
+  d3.phylonator = {}
+  d3.phylonator.rightAngleDiagonal = function() {
     var projection = function(d) { return [d.y, d.x]; }
     
     var path = function(pathData) {
@@ -40,15 +40,15 @@ if (!d3) { throw "d3 wasn't included!"};
     return diagonal;
   }
   
-  d3.phylogram.radialRightAngleDiagonal = function() {
-    return d3.phylogram.rightAngleDiagonal()
+  d3.phylonator.radialRightAngleDiagonal = function() {
+    return d3.phylonator.rightAngleDiagonal()
       .path(function(pathData) {
         var src = pathData[0],
             mid = pathData[1],
             dst = pathData[2],
             radius = Math.sqrt(src[0]*src[0] + src[1]*src[1]),
-            srcAngle = d3.phylogram.coordinateToAngle(src, radius),
-            midAngle = d3.phylogram.coordinateToAngle(mid, radius),
+            srcAngle = d3.phylonator.coordinateToAngle(src, radius),
+            midAngle = d3.phylonator.coordinateToAngle(mid, radius),
             clockwise = Math.abs(midAngle - srcAngle) > Math.PI ? midAngle <= srcAngle : midAngle > srcAngle,
             rotation = 0,
             largeArc = 0,
@@ -64,7 +64,7 @@ if (!d3) { throw "d3 wasn't included!"};
   }
   
   // Convert XY and radius to angle of a circle centered at 0,0
-  d3.phylogram.coordinateToAngle = function(coord, radius) {
+  d3.phylonator.coordinateToAngle = function(coord, radius) {
     var wholeAngle = 2 * Math.PI,
         quarterAngle = wholeAngle / 4
     
@@ -90,7 +90,7 @@ if (!d3) { throw "d3 wasn't included!"};
     return coordAngle
   }
   
-  d3.phylogram.styleTreeNodes = function(vis, nodes) {
+  d3.phylonator.styleTreeNodes = function(vis, nodes) {
       
    var nodeMouseOver = function() {
 	   var circle = d3.select(this);
@@ -186,7 +186,7 @@ if (!d3) { throw "d3 wasn't included!"};
   }
   
   
-  d3.phylogram.build = function(selector, nodes, options) {
+  d3.phylonator.build = function(selector, nodes, options) {
     options = options || {}
     var w = options.width || d3.select(selector).style('width') || d3.select(selector).attr('width'),
         h = options.height || d3.select(selector).style('height') || d3.select(selector).attr('height'),
@@ -201,7 +201,7 @@ if (!d3) { throw "d3 wasn't included!"};
       .children(options.children || function(node) {
         return node.branchset
       });
-    var diagonal = options.diagonal || d3.phylogram.rightAngleDiagonal();
+    var diagonal = options.diagonal || d3.phylonator.rightAngleDiagonal();
     var vis = options.vis || d3.select(selector).append("svg:svg")
         .attr("width", w + 300)
         .attr("height", h + 30)
@@ -210,7 +210,7 @@ if (!d3) { throw "d3 wasn't included!"};
         .call(d3.behavior.zoom().on("zoom", redraw)) //Zooming
         .append("svg:g")
         .attr("transform", "translate(20, 20)")
-        .attr("id", "phylogram_svg")
+        .attr("id", "phylonator_svg") //Reference
     var nodes = tree(nodes);
 	
 	
@@ -328,20 +328,10 @@ if (!options.skipTicks) {
         }
       });
   
-    d3.phylogram.styleTreeNodes(vis, nodes)
+    d3.phylonator.styleTreeNodes(vis, nodes)
 
     if (!options.skipLabels) {
-/*
-      vis.selectAll('g.inner.node')
-        .append("svg:text")
-          .attr("dx", -6)
-          .attr("dy", -6)
-          .attr("text-anchor", 'end')
-          .attr('font-size', '8px')
-          .attr('fill', '#ccc')
-          .text(function(d) { return d.data.length; });
-*/
-
+    
       vis.selectAll('g.leaf.node').append("svg:text")
         .attr("dx", 8)
         .attr("dy", 3)

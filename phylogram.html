@@ -27,7 +27,7 @@ function load() {
         }
     buildNewickNodes(newick)
 
-    d3.phylogram.build('#phylogram', newick, {
+    d3.phylonator.build('#phylogram', newick, {
         width: 800,
         height: 600,
         skipTicks: true
@@ -78,7 +78,7 @@ $(document).ready(function () {
             buildNewickNodes(newick)
             d3.select('svg').remove();
 
-            d3.phylogram.build('#phylogram', newick, {
+            d3.phylonator.build('#phylogram', newick, {
                 width: 800,
                 height: 600,
                 skipTicks: true
