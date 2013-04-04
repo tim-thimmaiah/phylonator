@@ -219,9 +219,9 @@ if (!d3) { throw "d3 wasn't included!"};
         .attr("height", h + 30)
         .attr('pointer-events', 'all')
         .append('svg:g')
-        .call(d3.behavior.zoom().on("zoom", redraw)) //Zooming
+        .call(d3.behavior.zoom().scaleExtent([1,5]).on("zoom", redraw)) //Zooming
         .append("svg:g")
-        .attr("transform", "translate(20, 20)")
+        .attr("transform", "translate(0, 0)")
         .attr("id", "phylonator_svg") //Reference
     var nodes = tree(nodes);
 	
@@ -233,7 +233,7 @@ if (!d3) { throw "d3 wasn't included!"};
 	    
     function redraw() {
 	  vis.attr("transform",
-	      "translate(" + d3.event.translate + ")"
+	      "translate(" + (d3.event.translate) + ")"
 	      + " scale(" + d3.event.scale + ")");
       }
 
